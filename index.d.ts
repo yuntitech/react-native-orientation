@@ -15,3 +15,5 @@ export function lockToPortrait(): void;
 export function lockToLandscape(): void;
 
 export function lockToLandscapeRight(): void;
+
+export function lockToLandscapeLeft(): void;
