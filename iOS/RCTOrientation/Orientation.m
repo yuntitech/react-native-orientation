@@ -39,6 +39,10 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
   return YES;
 }
 
+- (dispatch_queue_t)methodQueue {
+    return dispatch_get_main_queue();
+}
+
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
