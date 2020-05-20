@@ -43,15 +43,16 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
     return dispatch_get_main_queue();
 }
 
-- (void)deviceOrientationDidChange:(NSNotification *)notification
-{
-  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
-                                              body:@{@"specificOrientation": [self getSpecificOrientationStr:orientation]}];
-
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
-                                              body:@{@"orientation": [self getOrientationStr:orientation]}];
-
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
+    __weak typeof(self) wself = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        [wself.bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
+                                                         body:@{@"specificOrientation": [wself getSpecificOrientationStr:orientation]}];
+        
+        [wself.bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
+                                                         body:@{@"orientation": [wself getOrientationStr:orientation]}];
+    });
 }
 
 - (NSString *)getOrientationStr: (UIDeviceOrientation)orientation {
@@ -141,18 +142,22 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(getOrientation:(RCTResponseSenderBlock)callback)
-{
-  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-  NSString *orientationStr = [self getOrientationStr:orientation];
-  callback(@[[NSNull null], orientationStr]);
+RCT_EXPORT_METHOD(getOrientation:(RCTResponseSenderBlock)callback) {
+    __weak typeof(self) wself = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        NSString *orientationStr = [wself getOrientationStr:orientation];
+        callback(@[[NSNull null], orientationStr]);
+    });
 }
 
-RCT_EXPORT_METHOD(getSpecificOrientation:(RCTResponseSenderBlock)callback)
-{
-  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-  NSString *orientationStr = [self getSpecificOrientationStr:orientation];
-  callback(@[[NSNull null], orientationStr]);
+RCT_EXPORT_METHOD(getSpecificOrientation:(RCTResponseSenderBlock)callback) {
+    __weak typeof(self) wself = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        NSString *orientationStr = [wself getSpecificOrientationStr:orientation];
+        callback(@[[NSNull null], orientationStr]);
+    });
 }
 
 RCT_EXPORT_METHOD(lockToPortrait)
