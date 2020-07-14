@@ -36,6 +36,9 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
             @Override
             public void onReceive(Context context, Intent intent) {
                 Configuration newConfig = intent.getParcelableExtra("newConfig");
+                if (newConfig == null) {
+                    return;
+                }
                 Log.d("receiver", String.valueOf(newConfig.orientation));
 
                 String orientationValue = newConfig.orientation == 1 ? "PORTRAIT" : "LANDSCAPE";
