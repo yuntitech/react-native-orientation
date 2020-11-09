@@ -23,7 +23,7 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
 - (instancetype)init
 {
     if ((self = [super init])) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
     
@@ -182,21 +182,7 @@ RCT_EXPORT_METHOD(lockToLandscape)
 #if DEBUG
     NSLog(@"Locked to Landscape");
 #endif
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    NSString *orientationStr = [self getSpecificOrientationStr:orientation];
-    if ([orientationStr isEqualToString:@"LANDSCAPE-LEFT"]) {
-        [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-            [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
-        }];
-    } else {
-        [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-            [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-            [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
-        }];
-    }
+    [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
 }
 
 RCT_EXPORT_METHOD(lockToLandscapeLeft)
@@ -232,8 +218,6 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
     NSLog(@"Unlock All Orientations");
 #endif
     [Orientation setOrientation:UIInterfaceOrientationMaskAll];
-    //  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    //  delegate.orientation = 3;
 }
 
 - (NSDictionary *)constantsToExport
