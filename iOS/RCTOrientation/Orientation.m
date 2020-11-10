@@ -169,9 +169,11 @@ RCT_EXPORT_METHOD(lockToPortrait)
     [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         
-        // 修复屏幕旋转的 bug
-        NSNumber *resetOrientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationUnknown];
-        [[UIDevice currentDevice] setValue:resetOrientationTarget forKey:@"orientation"];
+        if (@available(iOS 13.0, *)) {
+            // 修复屏幕旋转的 bug
+            NSNumber *resetOrientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationUnknown];
+            [[UIDevice currentDevice] setValue:resetOrientationTarget forKey:@"orientation"];
+        }
         [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait] forKey:@"orientation"];
     }];
     
@@ -183,6 +185,25 @@ RCT_EXPORT_METHOD(lockToLandscape)
     NSLog(@"Locked to Landscape");
 #endif
     [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
+    
+    if (@available(iOS 13.0, *)) {
+    } else {
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        NSString *orientationStr = [self getSpecificOrientationStr:orientation];
+        if ([orientationStr isEqualToString:@"LANDSCAPE-LEFT"]) {
+            [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+                [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+                [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+            }];
+        } else {
+            [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+                [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+                [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
+            }];
+        }
+    }
 }
 
 RCT_EXPORT_METHOD(lockToLandscapeLeft)
