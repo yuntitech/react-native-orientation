@@ -281,9 +281,12 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
     [Orientation setOrientation:UIInterfaceOrientationMaskAll];
 }
 
-RCT_EXPORT_METHOD(updateSupportForOrientationChange:(BOOL)supportForOrientationChange)
+/**
+ 支持所有方向
+ */
+RCT_EXPORT_METHOD(supportForAllOrientations:(BOOL)supportAllOrientations)
 {
-    self.supportForOrientationChange = supportForOrientationChange;
+    self.supportForOrientationChange = supportAllOrientations;
 }
 
 - (NSDictionary *)constantsToExport

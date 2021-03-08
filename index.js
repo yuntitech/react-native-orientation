@@ -102,7 +102,7 @@ module.exports = {
     return Orientation.initialOrientation;
   },
 
-  updateSupportForOrientationChange(supportForOrientationChange) {
-    Orientation.updateSupportForOrientationChange(supportForOrientationChange);
+  supportForAllOrientations(supportAllOrientations) {
+    Orientation.supportForAllOrientations(supportAllOrientations);
   },
 };
