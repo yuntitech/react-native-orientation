@@ -17,3 +17,5 @@ export function lockToLandscape(): void;
 export function lockToLandscapeRight(): void;
 
 export function lockToLandscapeLeft(): void;
+
+export function supportForAllOrientations(): void;
