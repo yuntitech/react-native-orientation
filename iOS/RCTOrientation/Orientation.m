@@ -9,6 +9,10 @@
 #import "RCTEventDispatcher.h"
 #endif
 
+static NSString *const BKLiOSDeviceOrientationDidChangeNotification = @"cn.bookln.iOSDeviceOrientationDidChange";
+@interface Orientation()
+@property(nonatomic, assign) BOOL supportForOrientationChange;
+@end
 @implementation Orientation
 @synthesize bridge = _bridge;
 
@@ -54,7 +58,7 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
         [wself.bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
                                                          body:@{@"specificOrientation": [wself getSpecificOrientationStr:orientation]}];
         
-        [wself.bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
+        [wself.bridge.eventDispatcher sendDeviceEventWithName:BKLiOSDeviceOrientationDidChangeNotification
                                                          body:@{@"orientation": [wself getOrientationStr:orientation]}];
     });
 }
