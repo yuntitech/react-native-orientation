@@ -18,4 +18,10 @@ export function lockToLandscapeRight(): void;
 
 export function lockToLandscapeLeft(): void;
 
-export function supportForAllOrientations(): void;
+/**
+ * iOS Only
+ * @param supportAllOrientations 是否支持所有方向
+ */
+export function supportForAllOrientations(
+  supportAllOrientations: boolean
+): void;
