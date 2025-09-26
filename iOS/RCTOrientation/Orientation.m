@@ -224,7 +224,7 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
   // 强制系统重新检查支持的方向
   dispatch_async(dispatch_get_main_queue(), ^{
     [UIViewController attemptRotationToDeviceOrientation];
-  })
+  });
 //  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 //  delegate.orientation = 3;
 }
